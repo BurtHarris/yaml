@@ -57,10 +57,10 @@
     ]
   },
   "scripts": {
-    "browser:build": "BABEL_ENV=browser babel src/ --out-dir browser/dist/",
+    "browser:build": "BABEL_ENV=browser babel src/ --out-dir browser/dist/ --extensions '.js,.ts'",
     "browser:copy": "cpy '*.js' '!*.config.js' types/ browser/ --parents",
     "clean": "git clean -fdxe node_modules",
-    "dist:build": "babel src/ --out-dir dist/",
+    "dist:build": "babel src/ --out-dir dist/ --extensions '.js,.ts'",
     "build": "npm run dist:build && npm run browser:build && npm run browser:copy",
     "prettier": "prettier --write \"{src,tests}/**/*.js\"",
     "lint": "eslint src/",
@@ -71,7 +71,8 @@
     "docs:deploy": "cd docs/ && ./deploy.sh",
     "docs": "cd docs/ && bundle exec middleman server",
     "preversion": "npm test && npm run build",
-    "prepublishOnly": "npm run clean && npm test && npm run build"
+    "prepublishOnly": "npm run clean && npm test && npm run build",
+    "type-check": "tsc"
   },
   "browserslist": "> 0.5%, not dead",
   "jest": {
@@ -94,8 +95,10 @@
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.7",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.8.3",
     "@babel/preset-env": "^7.8.7",
+    "@babel/preset-typescript": "^7.8.3",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^25.1.0",
     "babel-plugin-trace": "^1.1.0",
@@ -106,7 +109,8 @@
     "eslint-plugin-prettier": "^3.1.2",
     "fast-check": "^1.23.0",
     "jest": "^25.1.0",
-    "prettier": "^1.19.1"
+    "prettier": "^1.19.1",
+    "typescript": "^3.8.3"
   },
   "dependencies": {
     "@babel/runtime": "^7.8.7"
