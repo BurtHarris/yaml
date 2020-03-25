@@ -7,3 +7,5 @@
 /docs/source/stylesheets/
 /package*.json
 /tests/yaml-test-suite/
+/declarations
+/ts
