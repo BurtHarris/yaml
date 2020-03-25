@@ -2,6 +2,7 @@ import { YAMLMap } from './Map'
 import { Pair } from './Pair'
 import { Scalar } from './Scalar'
 import { YAMLSeq } from './Seq'
+import { Seq } from './Seq'
 
 export const MERGE_KEY = '<<'
 

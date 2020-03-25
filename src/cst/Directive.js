@@ -1,3 +1,4 @@
+//@ts-check
 import { Type } from '../constants'
 import { Node } from './Node'
 import { Range } from './Range'

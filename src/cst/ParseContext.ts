@@ -1,3 +1,4 @@
+//@ts-check
 import { Char, Type } from '../constants'
 import { YAMLSyntaxError } from '../errors'
 import { Alias } from './Alias'
@@ -81,18 +82,25 @@ export class ParseContext {
     }
   }
 
+  atLineStart?: boolean /** Node starts at beginning of line */
+  inFlow?: boolean /** true if currently in a flow context */
+  inCollection?: boolean /** true if currently in a collection context  */
+  indent?: number /** Current level of indentation  */
+  lineStart?: number /** Start of the current line  */
+  parent?: Node /** The parent of the node  */
+  src?: string /** Source of the YAML document */
+  root?: Document
+
   constructor(
-    orig = {},
-    { atLineStart, inCollection, inFlow, indent, lineStart, parent } = {}
+    orig: Partial<ParseContext> = {},
+    overlay: Partial<ParseContext> = {}
   ) {
-    this.atLineStart =
-      atLineStart != null ? atLineStart : orig.atLineStart || false
-    this.inCollection =
-      inCollection != null ? inCollection : orig.inCollection || false
-    this.inFlow = inFlow != null ? inFlow : orig.inFlow || false
-    this.indent = indent != null ? indent : orig.indent
-    this.lineStart = lineStart != null ? lineStart : orig.lineStart
-    this.parent = parent != null ? parent : orig.parent || {}
+    this.atLineStart = (overlay.atLineStart ?? orig.atLineStart) || false
+    this.inCollection = (overlay.inCollection ?? orig.inCollection) || false
+    this.inFlow = (overlay.inFlow ?? orig.inFlow) || false
+    this.indent = overlay.indent ?? orig.indent
+    this.lineStart = overlay.lineStart ?? orig.lineStart
+    this.parent = overlay.parent ?? orig.parent
     this.root = orig.root
     this.src = orig.src
   }
@@ -197,7 +205,9 @@ export class ParseContext {
     if (offset <= start) {
       // This should never happen, but if it does, let's make sure to at least
       // step one character forward to avoid a busy loop.
+      //@ts-ignore
       node.error = new Error(`Node#parse consumed no characters`)
+      //@ts-ignore
       node.error.parseEnd = offset
       node.error.source = node
       node.range.end = start + 1
@@ -229,3 +239,5 @@ export class ParseContext {
     return node
   }
 }
+export type PartialContext = Partial<ParseContext>
+export default ParseContext

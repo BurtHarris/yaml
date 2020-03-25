@@ -1,3 +1,4 @@
+//@ts-check
 import { Char, Type } from '../constants'
 import { PlainValue } from '../cst/PlainValue'
 import { YAMLSemanticError, YAMLSyntaxError, YAMLWarning } from '../errors'

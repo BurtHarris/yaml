@@ -1,9 +1,12 @@
+// @ts-check
 import { Type } from '../constants'
 import { BlankLine } from './BlankLine'
 import { CollectionItem } from './CollectionItem'
 import { Comment } from './Comment'
 import { Node } from './Node'
 import { Range } from './Range'
+// eslint-disable-next-line no-unused-vars
+import { ParseContext, PartialContext } from './ParseContext'
 
 export function grabCollectionEndComments(node) {
   let cnode = node
@@ -47,6 +50,12 @@ export class Collection extends Node {
     return Collection.nextContentHasIndent(src, offset, indent)
   }
 
+  /**
+   * @param {CollectionItem | import("./Alias").default |
+   * import("./BlockValue").default | import("./FlowCollection").default |
+   * import("./PlainValue").default | import("./QuoteDouble").default |
+   * import("./QuoteSingle").default} firstItem
+   */
   constructor(firstItem) {
     super(firstItem.type === Type.SEQ_ITEM ? Type.SEQ : Type.MAP)
     for (let i = firstItem.props.length - 1; i >= 0; --i) {
@@ -59,6 +68,7 @@ export class Collection extends Node {
         break
       }
     }
+    /** @member {Array<Node|FlowCollection|Alias|BlockValue|FlowCollection|PlainValue|QuoteDouble|QuoteSingle>} items */
     this.items = [firstItem]
     const ec = grabCollectionEndComments(firstItem)
     if (ec) Array.prototype.push.apply(this.items, ec)
@@ -80,6 +90,7 @@ export class Collection extends Node {
     const { parseNode, src } = context
     // It's easier to recalculate lineStart here rather than tracking down the
     // last context from which to read it -- eemeli/yaml#2
+    /** type {number} */
     let lineStart = Node.startOfLine(src, start)
     const firstItem = this.items[0]
     // First-item context needs to be correct for later comment handling
@@ -172,6 +183,7 @@ export class Collection extends Node {
         offset
       )
       if (!node) return offset // at next document start
+      // @ts-ignore
       this.items.push(node)
       this.valueRange.end = node.valueRange.end
       offset = Node.normalizeOffset(src, node.range.end)

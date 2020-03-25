@@ -1,6 +1,9 @@
+//@ts-check
 import { YAMLSemanticError, YAMLSyntaxError } from '../errors'
 import { Node } from './Node'
 import { Range } from './Range'
+// eslint-disable-next-line no-unused-vars
+import { ParseContext, PartialContext } from './ParseContext'
 
 export class QuoteSingle extends Node {
   static endOfQuote(src, offset) {

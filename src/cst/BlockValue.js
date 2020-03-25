@@ -1,6 +1,9 @@
+// @ts-check
 import { Type } from '../constants'
 import { Node } from './Node'
 import { Range } from './Range'
+// eslint-disable-next-line no-unused-vars
+import { ParseContext, PartialContext } from './ParseContext'
 
 export const Chomp = {
   CLIP: 'CLIP',
@@ -14,6 +17,7 @@ export class BlockValue extends Node {
     this.blockIndent = null
     this.chomping = Chomp.CLIP
     this.header = null
+    this.blockStyle = undefined
   }
 
   get includesTrailingLines() {

@@ -2,17 +2,20 @@
 import { Char, Type } from '../constants'
 import { getLinePos } from './source-utils'
 import { Range } from './Range'
+import { YAMLError } from '../errors'
+import { ParseContext } from './ParseContext'
 
 /** Root class of all nodes */
+/** @member {{src: string}} context */
 export class Node {
-  static addStringTerminator(src, offset, str) {
+  static addStringTerminator(src: string, offset: number, str) {
     if (str[str.length - 1] === '\n') return str
     const next = Node.endOfWhiteSpace(src, offset)
     return next >= src.length || src[next] === '\n' ? str + '\n' : str
   }
 
   // ^(---|...)
-  static atDocumentBoundary(src, offset, sep) {
+  static atDocumentBoundary(src: string, offset: number, sep?: string) {
     const ch0 = src[offset]
     if (!ch0) return true
     const prev = src[offset - 1]
@@ -29,7 +32,7 @@ export class Node {
     return !ch3 || ch3 === '\n' || ch3 === '\t' || ch3 === ' '
   }
 
-  static endOfIdentifier(src, offset) {
+  static endOfIdentifier(src: string, offset: number) {
     let ch = src[offset]
     const isVerbatim = ch === '<'
     const notOk = isVerbatim
@@ -40,25 +43,25 @@ export class Node {
     return offset
   }
 
-  static endOfIndent(src, offset) {
+  static endOfIndent(src: string, offset: number) {
     let ch = src[offset]
     while (ch === ' ') ch = src[(offset += 1)]
     return offset
   }
 
-  static endOfLine(src, offset) {
+  static endOfLine(src: string, offset: number) {
     let ch = src[offset]
     while (ch && ch !== '\n') ch = src[(offset += 1)]
     return offset
   }
 
-  static endOfWhiteSpace(src, offset) {
+  static endOfWhiteSpace(src: string, offset: number) {
     let ch = src[offset]
     while (ch === '\t' || ch === ' ') ch = src[(offset += 1)]
     return offset
   }
 
-  static startOfLine(src, offset) {
+  static startOfLine(src: string, offset: number) {
     let ch = src[offset - 1]
     if (ch === '\n') return offset
     while (ch && ch !== '\n') ch = src[(offset -= 1)]
@@ -74,7 +77,7 @@ export class Node {
    * @param {number} lineStart
    * @returns {?number}
    */
-  static endOfBlockIndent(src, indent, lineStart) {
+  static endOfBlockIndent(src: string, indent: number, lineStart) {
     const inEnd = Node.endOfIndent(src, lineStart)
     if (inEnd > lineStart + indent) {
       return inEnd
@@ -86,7 +89,7 @@ export class Node {
     return null
   }
 
-  static atBlank(src, offset, endAsBlank) {
+  static atBlank(src: string, offset: number, endAsBlank: boolean = false) {
     const ch = src[offset]
     return ch === '\n' || ch === '\t' || ch === ' ' || (endAsBlank && !ch)
   }
@@ -98,7 +101,7 @@ export class Node {
   }
 
   // should be at line or string end, or at next non-whitespace char
-  static normalizeOffset(src, offset) {
+  static normalizeOffset(src: string, offset: number) {
     const ch = src[offset]
     return !ch
       ? offset
@@ -109,7 +112,7 @@ export class Node {
 
   // fold single newline into space, multiple newlines to N - 1 newlines
   // presumes src[offset] === '\n'
-  static foldNewline(src, offset, indent) {
+  static foldNewline(src: string, offset: number, indent) {
     let inCount = 0
     let error = false
     let fold = ''
@@ -137,18 +140,26 @@ export class Node {
     return { fold, offset, error }
   }
 
-  constructor(type, props, context) {
+  error: YAMLError = null
+  props: Array<Range>
+  range: Range = null
+  value: any = null
+  valueRange: Range = null
+  header: any
+
+  constructor(
+    public type: string,
+    props?: Array<Range>,
+    public context: Partial<ParseContext> = null
+  ) {
     // Object.defineProperty(this, 'context', {
     //   value: context || null,
     //   writable: true
     // })
-    this.error = null
-    this.range = null
-    this.valueRange = null
-    this.props = props || []
-    this.type = type
-    this.value = null
+
+    this.props = props ?? []
     // The following added in TypeScript port, might check
+
     this.context = context // Object.defineProperty not picked up by tsc!
     this.header = undefined
   }

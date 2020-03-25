@@ -1,3 +1,4 @@
+//@ts-check
 import { Type } from '../constants'
 import { YAMLSemanticError, YAMLSyntaxError, YAMLWarning } from '../errors'
 import { Pair } from './Pair'

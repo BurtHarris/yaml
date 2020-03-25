@@ -1,3 +1,4 @@
+// @ts-check
 import { Type } from '../constants'
 import { YAMLSemanticError } from '../errors'
 import { BlankLine } from './BlankLine'
@@ -6,9 +7,11 @@ import { Node } from './Node'
 import { Range } from './Range'
 
 export class FlowCollection extends Node {
+  items: Array<any> = null
+
   constructor(type, props) {
     super(type, props)
-    this.items = null
+    /* @member {Array<*>} [items] */
   }
 
   prevNodeIsJsonLike(idx = this.items.length) {
@@ -16,12 +19,13 @@ export class FlowCollection extends Node {
     return (
       !!node &&
       (node.jsonLike ||
+        // @ts-ignorets-ignore see issue Is `nodeIsJsonLike` defined? #149
         (node.type === Type.COMMENT && this.nodeIsJsonLike(idx - 1)))
     )
   }
 
   /**
-   * @param {ParseContext} context
+   * @param {*} context
    * @param {number} start - Index of first character
    * @returns {number} - Index of the character after this
    */

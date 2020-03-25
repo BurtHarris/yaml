@@ -1,3 +1,4 @@
+//@ts-check
 import { YAMLSemanticError } from '../errors'
 import { Type } from '../constants'
 

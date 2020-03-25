@@ -19,6 +19,7 @@ export function parse(src) {
     offset = doc.parse(context, offset)
     documents.push(doc)
   } while (offset < src.length)
+  // @ts-ignore monkey patching?
   documents.setOrigRanges = () => {
     if (cr.length === 0) return false
     for (let i = 1; i < cr.length; ++i) cr[i] -= i

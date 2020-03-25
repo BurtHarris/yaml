@@ -1,3 +1,4 @@
+//@ts-check
 import { warnOptionDeprecation } from '../warnings'
 import { Type } from '../constants'
 import { YAMLReferenceError, YAMLWarning } from '../errors'

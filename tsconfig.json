@@ -1,26 +1,24 @@
 {
-    "compilerOptions": {
-      // Target latest version of ECMAScript.
-      "target": "esnext",
-      // Search under node_modules for non-relative imports.
-      "moduleResolution": "node",
-      // Process & infer types from .js files.
-      "allowJs": true,
-      // Perform typechecking in .js files
-      "checkJs": false,
-      // Don't emit; allow Babel to transform files.
-      "noEmit": false,
-      "outDir": "ts",
-      // disable strictest settings like strictNullChecks & noImplicitAny.
-      "strict": false,
-      "declaration": true,
-      "declarationDir": "./declarations",
-      // Disallow features that require cross-file information for emit.
-      "isolatedModules": true,
-      // Import non-ES modules as default imports.
-      "esModuleInterop": true
-    },
-    "include": [
-      "src"
-    ]
-  }
+  "compilerOptions": {
+    // Target latest version of ECMAScript.
+    "target": "esnext",
+    // Search under node_modules for non-relative imports.
+    "moduleResolution": "node",
+    // Process & infer types from .js files.
+    "allowJs": true,
+    // Perform typechecking in .js files
+    "checkJs": true,
+    // Don't emit; allow Babel to transform files.
+    "noEmit": true,
+    "outDir": "ts",
+    // disable strictest settings like strictNullChecks & noImplicitAny.
+    "strict": false,
+    "declaration": true,
+    "declarationDir": "./declarations",
+    // Disallow features that require cross-file information for emit.
+    "isolatedModules": true,
+    // Import non-ES modules as default imports.
+    "esModuleInterop": true
+  },
+  "include": ["src/cst"]
+}

@@ -1,5 +1,7 @@
 import { Node } from './Node'
 import { Range } from './Range'
+// eslint-disable-next-line no-unused-vars
+import { ParseContext, PartialContext } from './ParseContext'
 
 export class PlainValue extends Node {
   static endOfLine(src, start, inFlow) {

@@ -12,6 +12,10 @@ export class YAMLError extends Error {
     this.source = source
   }
 
+  set(offset) {
+    this.offset = offset
+  }
+
   makePretty() {
     if (!this.source) return
     this.nodeType = this.source.type

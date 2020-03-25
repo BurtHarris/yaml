@@ -1,3 +1,4 @@
+//@ts-check
 function findLineStarts(src) {
   const ls = [0]
   let offset = src.indexOf('\n')
@@ -94,7 +95,7 @@ export function getLine(line, cst) {
  * @param {Object} pos
  * @param {LinePos} pos.start
  * @param {LinePos} [pos.end]
- * @param {string|Document|Document[]*} cst
+ * @param {string|Document|Document[]} cst
  * @param {number} [maxWidth=80]
  * @returns {?string}
  */

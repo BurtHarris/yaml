@@ -1,13 +1,17 @@
+//@ts-check
 import { Type } from '../constants'
 import { YAMLSemanticError } from '../errors'
 import { BlankLine } from './BlankLine'
 import { Node } from './Node'
 import { Range } from './Range'
+// eslint-disable-next-line no-unused-vars
+import { default as ParseContext, PartialContext } from './ParseContext'
 
 export class CollectionItem extends Node {
-  constructor(type, props) {
+  node: Node = null
+
+  constructor(type: string, props: Range[]) {
     super(type, props)
-    this.node = null
   }
 
   get includesTrailingLines() {
@@ -15,11 +19,11 @@ export class CollectionItem extends Node {
   }
 
   /**
-   * @param {ParseContext} context
+   * @param {PartialContext} context
    * @param {number} start - Index of first character
    * @returns {number} - Index of the character after this
    */
-  parse(context, start) {
+  parse(context: Partial<ParseContext>, start: number) {
     this.context = context
     // @ts-ignore trace
     trace: 'item-start', context.pretty, { start }
@@ -78,6 +82,7 @@ export class CollectionItem extends Node {
         // Only blank lines preceding non-empty nodes are captured. Note that
         // this means that collection item range start indices do not always
         // increase monotonically. -- eemeli/yaml#126
+        // @ts-ignore
         const items = context.parent.items || context.parent.contents
         if (items) items.push(blankLine)
       }
@@ -99,7 +104,7 @@ export class CollectionItem extends Node {
     return offset
   }
 
-  setOrigRanges(cr, offset) {
+  setOrigRanges(cr: any, offset: any) {
     offset = super.setOrigRanges(cr, offset)
     return this.node ? this.node.setOrigRanges(cr, offset) : offset
   }

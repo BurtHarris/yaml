@@ -1,11 +1,15 @@
+<<<<<< HEAD
 import { Node } from './Node'
 import { Range } from './Range'
+
+// eslint-disable-next-line no-unused-vars
+import { ParseContext, PartialContext } from './ParseContext'
 
 export class Alias extends Node {
   /**
    * Parses an *alias from the source
    *
-   * @param {ParseContext} context
+   * @param {PartialContext} context
    * @param {number} start - Index of first character
    * @returns {number} - Index of the character after this scalar
    */

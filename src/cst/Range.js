@@ -3,6 +3,10 @@ export class Range {
     return new Range(orig.start, orig.end)
   }
 
+  /**
+   * @param {number} start
+   * @param {number} [end]
+   */
   constructor(start, end) {
     this.start = start
     this.end = end || start

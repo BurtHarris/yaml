@@ -1,3 +1,4 @@
+//@ts-check
 import { Char, Type } from '../constants'
 import { YAMLSemanticError, YAMLSyntaxError } from '../errors'
 import { BlankLine } from './BlankLine'
@@ -6,6 +7,8 @@ import { Comment } from './Comment'
 import { Directive } from './Directive'
 import { Node } from './Node'
 import { Range } from './Range'
+// eslint-disable-next-line no-unused-vars
+import { ParseContext, PartialContext } from './ParseContext'
 
 export class Document extends Node {
   static startCommentOrEndBlankLine(src, start) {
@@ -14,12 +17,13 @@ export class Document extends Node {
     return ch === '#' || ch === '\n' ? offset : start
   }
 
+  directives: Array<Directive | BlankLine | Comment> = null
+  contents: Array<Node> = null
+  directivesEndMarker = null
+  documentEndMarker = null
+
   constructor() {
     super(Type.DOCUMENT)
-    this.directives = null
-    this.contents = null
-    this.directivesEndMarker = null
-    this.documentEndMarker = null
   }
 
   parseDirectives(start) {
@@ -188,7 +192,7 @@ export class Document extends Node {
   }
 
   /**
-   * @param {ParseContext} context
+   * @param {PartialContext} context
    * @param {number} start - Index of first character
    * @returns {number} - Index of the character after this
    */

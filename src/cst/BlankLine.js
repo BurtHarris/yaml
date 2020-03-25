@@ -1,6 +1,9 @@
+// @ts-check
 import { Type } from '../constants'
 import { Node } from './Node'
 import { Range } from './Range'
+// eslint-disable-next-line no-unused-vars
+import { ParseContext, PartialContext } from './ParseContext'
 
 export class BlankLine extends Node {
   constructor() {
@@ -17,7 +20,7 @@ export class BlankLine extends Node {
   /**
    * Parses blank lines from the source
    *
-   * @param {ParseContext} context
+   * @param {{src:string}} context
    * @param {number} start - Index of first \n character
    * @returns {number} - Index of the character after this
    */
@@ -27,6 +30,7 @@ export class BlankLine extends Node {
     let offset = start + 1
     while (Node.atBlank(src, offset)) {
       const lineEnd = Node.endOfWhiteSpace(src, offset)
+      // @ts-ignore see issue: questionable code in BlankLine.js #150
       if (lineEnd === '\n') offset = lineEnd + 1
       else break
     }
