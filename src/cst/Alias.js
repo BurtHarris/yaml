@@ -16,6 +16,7 @@ export class Alias extends Node {
     this.valueRange = new Range(start + 1, offset)
     offset = Node.endOfWhiteSpace(src, offset)
     offset = this.parseComment(offset)
+    // @ts-ignore trace
     trace: this.type,
       { valueRange: this.valueRange, comment: this.comment },
       JSON.stringify(this.rawValue)

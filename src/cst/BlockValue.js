@@ -177,12 +177,14 @@ export class BlockValue extends Node {
    */
   parse(context, start) {
     this.context = context
+    // @ts-ignore trace
     trace: 'block-start', context.pretty, { start }
     const { src } = context
     let offset = this.parseBlockHeader(start)
     offset = Node.endOfWhiteSpace(src, offset)
     offset = this.parseComment(offset)
     offset = this.parseBlockValue(offset)
+    // @ts-ignore trace
     trace: this.type,
       {
         style: this.blockStyle,

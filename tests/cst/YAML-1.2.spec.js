@@ -3588,12 +3588,15 @@ for (const section in spec) {
       test(name, () => {
         const { src, tgt } = spec[section][name]
         const documents = parse(src)
+        // @ts-ignore trace
         trace: 'PARSED', JSON.stringify(pretty(documents), null, '  ')
         testSpec(documents, tgt)
         const reSrc = String(documents)
+        // @ts-ignore trace
         trace: 'RE-STRUNG', '\n' + reSrc
         // expect(reSrc).toBe(src)
         const reDoc = parse(reSrc)
+        // @ts-ignore trace
         trace: 'RE-PARSED', JSON.stringify(pretty(reDoc), null, '  ')
         testSpec(reDoc, tgt)
       })

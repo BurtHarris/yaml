@@ -26,6 +26,7 @@ export class FlowCollection extends Node {
    * @returns {number} - Index of the character after this
    */
   parse(context, start) {
+    // @ts-ignore trace
     trace: 'flow-start', context.pretty, { start }
     this.context = context
     const { parseNode, src } = context
@@ -35,6 +36,7 @@ export class FlowCollection extends Node {
     let offset = Node.endOfWhiteSpace(src, start + 1)
     char = src[offset]
     while (char && char !== ']' && char !== '}') {
+      // @ts-ignore trace
       trace: 'item-start', this.items.length, char
       switch (char) {
         case '\n':
@@ -119,6 +121,7 @@ export class FlowCollection extends Node {
       offset = Node.endOfWhiteSpace(src, offset + 1)
       offset = this.parseComment(offset)
     }
+    // @ts-ignore trace
     trace: 'items', this.items, JSON.stringify(this.comment)
     return offset
   }

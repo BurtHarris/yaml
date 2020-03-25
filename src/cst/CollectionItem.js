@@ -21,6 +21,7 @@ export class CollectionItem extends Node {
    */
   parse(context, start) {
     this.context = context
+    // @ts-ignore trace
     trace: 'item-start', context.pretty, { start }
     const { parseNode, src } = context
     let { atLineStart, lineStart } = context
@@ -52,6 +53,7 @@ export class CollectionItem extends Node {
       }
       ch = src[offset]
     }
+    // @ts-ignore trace
     trace: 'item-parse?',
       {
         indentDiff: offset - (lineStart + indent),
@@ -91,6 +93,7 @@ export class CollectionItem extends Node {
       }
     }
     const end = this.node ? this.node.valueRange.end : offset
+    // @ts-ignore trace
     trace: 'item-end', { start, end, offset }
     this.valueRange = new Range(start, end)
     return offset

@@ -37,6 +37,7 @@ export class Document extends Node {
             offset = blankLine.parse({ src }, offset)
             if (offset < src.length) {
               this.directives.push(blankLine)
+              // @ts-ignore trace
               trace: 'directive-blankline', blankLine.range
             }
           } else {
@@ -50,6 +51,7 @@ export class Document extends Node {
             offset = comment.parse({ src }, offset)
             this.directives.push(comment)
             atLineStart = false
+            // @ts-ignore trace
             trace: 'directive-comment', comment.comment
           }
           break
@@ -60,6 +62,7 @@ export class Document extends Node {
             this.directives.push(directive)
             hasDirectives = true
             atLineStart = false
+            // @ts-ignore trace
             trace: 'directive',
               { valueRange: directive.valueRange, comment: directive.comment },
               JSON.stringify(directive.rawValue)
@@ -110,6 +113,7 @@ export class Document extends Node {
             offset = blankLine.parse({ src }, offset)
             if (offset < src.length) {
               this.contents.push(blankLine)
+              // @ts-ignore trace
               trace: 'content-blankline', blankLine.range
             }
           } else {
@@ -123,6 +127,7 @@ export class Document extends Node {
             const comment = new Comment()
             offset = comment.parse({ src }, offset)
             this.contents.push(comment)
+            // @ts-ignore trace
             trace: 'content-comment', comment.comment
             atLineStart = false
           }
@@ -144,6 +149,7 @@ export class Document extends Node {
           atLineStart = false
           const ec = grabCollectionEndComments(node)
           if (ec) Array.prototype.push.apply(this.contents, ec)
+          // @ts-ignore trace
           trace: 'content-node',
             { valueRange: node.valueRange, comment: node.comment },
             JSON.stringify(node.rawValue)
@@ -161,6 +167,7 @@ export class Document extends Node {
           const comment = new Comment()
           offset = comment.parse({ src }, offset)
           this.contents.push(comment)
+          // @ts-ignore trace
           trace: 'document-suffix-comment', comment.comment
         }
         switch (src[offset]) {
@@ -189,10 +196,12 @@ export class Document extends Node {
     context.root = this
     this.context = context
     const { src } = context
+    // @ts-ignore trace
     trace: 'DOC START', JSON.stringify(src.slice(start))
     let offset = src.charCodeAt(start) === 0xfeff ? start + 1 : start // skip BOM
     offset = this.parseDirectives(offset)
     offset = this.parseContents(offset)
+    // @ts-ignore trace
     trace: 'DOC', this.contents
     return offset
   }

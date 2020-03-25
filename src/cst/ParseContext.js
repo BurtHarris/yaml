@@ -165,6 +165,7 @@ export class ParseContext {
     if (lineHasProps && ch === ':' && Node.atBlank(src, offset + 1, true))
       offset -= 1
     const type = ParseContext.parseType(src, offset, inFlow)
+    // @ts-ignore trace
     trace: 'props', type, { props, offset }
     return { props, type, valueStart: offset }
   }
@@ -179,6 +180,7 @@ export class ParseContext {
     if (Node.atDocumentBoundary(this.src, start)) return null
     const context = new ParseContext(this, overlay)
     const { props, type, valueStart } = context.parseProps(start)
+    // @ts-ignore trace
     trace: 'START',
       { valueStart, type, props },
       {
@@ -200,8 +202,10 @@ export class ParseContext {
       node.error.source = node
       node.range.end = start + 1
     }
+    // @ts-ignore trace
     trace: node.type, node.range, JSON.stringify(node.rawValue)
     if (context.nodeStartsCollection(node)) {
+      // @ts-ignore trace
       trace: 'collection-start'
       if (
         !node.error &&
@@ -216,6 +220,7 @@ export class ParseContext {
       const collection = new Collection(node)
       offset = collection.parse(new ParseContext(context), offset)
       collection.range = new Range(start, offset)
+      // @ts-ignore trace
       trace: collection.type,
         collection.range,
         JSON.stringify(collection.rawValue)

@@ -23,6 +23,7 @@ export function grabCollectionEndComments(node) {
   }
   if (ci === -1) return null
   const ca = cnode.items.splice(ci, len - ci)
+  // @ts-ignore trace
   trace: 'item-end-comments', ca
   const prevEnd = ca[0].range.start
   while (true) {
@@ -73,6 +74,7 @@ export class Collection extends Node {
    * @returns {number} - Index of the character after this
    */
   parse(context, start) {
+    // @ts-ignore trace
     trace: 'collection-start', context.pretty, { start }
     this.context = context
     const { parseNode, src } = context
@@ -90,6 +92,7 @@ export class Collection extends Node {
     let ch = src[offset]
     let atLineStart = Node.endOfWhiteSpace(src, lineStart) === offset
     let prevIncludesTrailingLines = false
+    // @ts-ignore trace
     trace: 'items-start', { offset, indent, lineStart, ch: JSON.stringify(ch) }
     while (ch) {
       while (ch === '\n' || ch === '#') {
@@ -102,6 +105,7 @@ export class Collection extends Node {
             break
           }
           this.items.push(blankLine)
+          // @ts-ignore trace
           trace: 'collection-blankline', blankLine.range
           offset -= 1 // blankLine.parse() consumes terminal newline
         } else if (ch === '#') {
@@ -109,6 +113,7 @@ export class Collection extends Node {
             offset < lineStart + indent &&
             !Collection.nextContentHasIndent(src, offset, indent)
           ) {
+            // @ts-ignore trace
             trace: 'end:comment-unindent', { offset, lineStart, indent }
             return offset
           }
@@ -134,10 +139,12 @@ export class Collection extends Node {
         atLineStart = true
       }
       if (!ch) {
+        // @ts-ignore trace
         trace: 'end:src', { offset }
         break
       }
       if (offset !== lineStart + indent && (atLineStart || ch !== ':')) {
+        // @ts-ignore trace
         trace: 'end:unindent',
           { offset, lineStart, indent, ch: JSON.stringify(ch) }
         if (lineStart > start) offset = lineStart
@@ -151,12 +158,14 @@ export class Collection extends Node {
           typeswitch = !next || next === '\n' || next === '\t' || next === ' '
         }
         if (typeswitch) {
+          // @ts-ignore trace
           trace: 'end:typeswitch',
             { offset, lineStart, indent, ch: JSON.stringify(ch) }
           if (lineStart > start) offset = lineStart
           break
         }
       }
+      // @ts-ignore trace
       trace: 'item-start', this.items.length, { ch: JSON.stringify(ch) }
       const node = parseNode(
         { atLineStart, inCollection: true, indent, lineStart, parent: this },
@@ -183,8 +192,10 @@ export class Collection extends Node {
       }
       const ec = grabCollectionEndComments(node)
       if (ec) Array.prototype.push.apply(this.items, ec)
+      // @ts-ignore trace
       trace: 'item-end', node.type, { offset, ch: JSON.stringify(ch) }
     }
+    // @ts-ignore trace
     trace: 'items', this.items
     return offset
   }

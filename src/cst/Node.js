@@ -263,6 +263,7 @@ export class Node {
       const end = Node.endOfLine(src, start + 1)
       const commentRange = new Range(start, end)
       this.props.push(commentRange)
+      // @ts-ignore trace
       trace: commentRange,
         JSON.stringify(
           this.getPropValue(this.props.length - 1, Char.COMMENT, true)

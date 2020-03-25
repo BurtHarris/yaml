@@ -1861,6 +1861,7 @@ for (const section in spec) {
         const docErrors = documents.map(doc =>
           doc.errors.map(err => err.message)
         )
+        // @ts-ignore trace
         trace: name,
           '\n' + JSON.stringify(json, null, '  '),
           { errors: docErrors }
@@ -1882,6 +1883,7 @@ for (const section in spec) {
           const src2 = documents.map(doc => String(doc)).join('\n...\n')
           const documents2 = YAML.parseAllDocuments(src2)
           const json2 = documents2.map(doc => doc.toJSON())
+          // @ts-ignore trace
           trace: name,
             '\nIN\n' + src,
             '\nJSON\n' + JSON.stringify(json, null, '  '),

@@ -78,6 +78,7 @@ export class PlainValue extends Node {
     }
     if (this.valueRange.isEmpty()) this.valueRange.start = start
     this.valueRange.end = valueEnd
+    // @ts-ignore trace
     trace: this.valueRange, JSON.stringify(this.rawValue)
     return valueEnd
   }
@@ -109,6 +110,7 @@ export class PlainValue extends Node {
    */
   parse(context, start) {
     this.context = context
+    // @ts-ignore trace
     trace: 'plain-start', context.pretty, { start }
     const { inFlow, src } = context
     let offset = start
@@ -119,12 +121,14 @@ export class PlainValue extends Node {
     this.valueRange = new Range(start, offset)
     offset = Node.endOfWhiteSpace(src, offset)
     offset = this.parseComment(offset)
+    // @ts-ignore trace
     trace: 'first line',
       { offset, valueRange: this.valueRange, comment: this.comment },
       JSON.stringify(this.rawValue)
     if (!this.hasComment || this.valueRange.isEmpty()) {
       offset = this.parseBlockValue(offset)
     }
+    // @ts-ignore trace
     trace: this.type,
       { offset, valueRange: this.valueRange },
       JSON.stringify(this.rawValue)

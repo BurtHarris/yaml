@@ -39,10 +39,12 @@ export const testSpec = (res, exp) => {
     expect(value).toBe(exp)
   } else if (Array.isArray(exp)) {
     expect(res).toBeInstanceOf(Array)
+    // @ts-ignore trace
     trace: 'test-array', exp
     exp.forEach((e, i) => testSpec(res[i], e))
   } else if (exp) {
     expect(res).toBeInstanceOf(Object)
+    // @ts-ignore trace
     trace: 'test-object', exp
     for (const key in exp) testSpec(res[key], exp[key])
   } else {

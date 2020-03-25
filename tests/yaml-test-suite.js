@@ -92,6 +92,7 @@ testDirs.forEach(dir => {
       const src2 =
         docs.map(doc => String(doc).replace(/\n$/, '')).join('\n...\n') + '\n'
       const docs2 = YAML.parseAllDocuments(src2)
+      // @ts-ignore trace
       trace: name,
         '\nIN\n' + yaml,
         '\nJSON\n' + JSON.stringify(docs[0], null, '  '),

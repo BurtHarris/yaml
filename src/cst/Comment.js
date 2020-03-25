@@ -18,6 +18,7 @@ export class Comment extends Node {
     this.context = context
     const offset = this.parseComment(start)
     this.range = new Range(start, offset)
+    // @ts-ignore trace
     trace: this.type, this.range, this.comment
     return offset
   }
