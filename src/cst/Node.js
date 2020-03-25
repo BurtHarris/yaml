@@ -1,3 +1,4 @@
+// @ts-check
 import { Char, Type } from '../constants'
 import { getLinePos } from './source-utils'
 import { Range } from './Range'
@@ -137,16 +138,19 @@ export class Node {
   }
 
   constructor(type, props, context) {
-    Object.defineProperty(this, 'context', {
-      value: context || null,
-      writable: true
-    })
+    // Object.defineProperty(this, 'context', {
+    //   value: context || null,
+    //   writable: true
+    // })
     this.error = null
     this.range = null
     this.valueRange = null
     this.props = props || []
     this.type = type
     this.value = null
+    // The following added in TypeScript port, might check
+    this.context = context // Object.defineProperty not picked up by tsc!
+    this.header = undefined
   }
 
   getPropValue(idx, key, skipKey) {
