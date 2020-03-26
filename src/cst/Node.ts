@@ -1,4 +1,3 @@
-// @ts-check
 import { Char, Type } from '../constants'
 import { getLinePos } from './source-utils'
 import { Range } from './Range'
@@ -8,7 +7,7 @@ import { ParseContext } from './ParseContext'
 /** Root class of all nodes */
 /** @member {{src: string}} context */
 export class Node {
-  static addStringTerminator(src: string, offset: number, str) {
+  static addStringTerminator(src: string, offset: number, str: string) {
     if (str[str.length - 1] === '\n') return str
     const next = Node.endOfWhiteSpace(src, offset)
     return next >= src.length || src[next] === '\n' ? str + '\n' : str
@@ -49,7 +48,7 @@ export class Node {
     return offset
   }
 
-  static endOfLine(src: string, offset: number) {
+  static endOfLine(src: string, offset: number, inFlow?: boolean) {
     let ch = src[offset]
     while (ch && ch !== '\n') ch = src[(offset += 1)]
     return offset
@@ -164,7 +163,7 @@ export class Node {
     this.header = undefined
   }
 
-  getPropValue(idx, key, skipKey) {
+  getPropValue(idx: number, key: string, skipKey: boolean) {
     if (!this.context) return null
     const { src } = this.context
     const prop = this.props[idx]
@@ -190,7 +189,7 @@ export class Node {
     return comments.length > 0 ? comments.join('\n') : null
   }
 
-  commentHasRequiredWhitespace(start) {
+  commentHasRequiredWhitespace(start: number) {
     const { src } = this.context
     if (this.header && start === this.header.end) return false
     if (!this.valueRange) return false
@@ -234,8 +233,10 @@ export class Node {
 
   get rangeAsLinePos() {
     if (!this.range || !this.context) return undefined
+    //@ts-ignore Confusion over type Document...
     const start = getLinePos(this.range.start, this.context.root)
     if (!start) return undefined
+    //@ts-ignore Confusion over type Document...
     const end = getLinePos(this.range.end, this.context.root)
     return { start, end }
   }
@@ -272,7 +273,7 @@ export class Node {
     return false
   }
 
-  parseComment(start) {
+  parseComment(start: number) {
     const { src } = this.context
     if (src[start] === Char.COMMENT) {
       const end = Node.endOfLine(src, start + 1)
@@ -296,7 +297,7 @@ export class Node {
    * @param {number} offset - Starting index of `cr` from the last call
    * @returns {number} - The next offset, matching the one found for `origStart`
    */
-  setOrigRanges(cr, offset) {
+  setOrigRanges(cr: Array<number>, offset: number) {
     if (this.range) offset = this.range.setOrigRange(cr, offset)
     if (this.valueRange) this.valueRange.setOrigRange(cr, offset)
     this.props.forEach(prop => prop.setOrigRange(cr, offset))

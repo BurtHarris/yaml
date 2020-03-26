@@ -1,4 +1,3 @@
-// @ts-check
 import { Type } from '../constants'
 import { BlankLine } from './BlankLine'
 import { CollectionItem } from './CollectionItem'
@@ -8,7 +7,7 @@ import { Range } from './Range'
 // eslint-disable-next-line no-unused-vars
 import { ParseContext, PartialContext } from './ParseContext'
 
-export function grabCollectionEndComments(node) {
+export function grabCollectionEndComments(node: Node) {
   let cnode = node
   while (cnode instanceof CollectionItem) cnode = cnode.node
   if (!(cnode instanceof Collection)) return null
@@ -50,13 +49,15 @@ export class Collection extends Node {
     return Collection.nextContentHasIndent(src, offset, indent)
   }
 
+  items: Array<CollectionItem | BlankLine | Comment>
+
   /**
    * @param {CollectionItem | import("./Alias").default |
    * import("./BlockValue").default | import("./FlowCollection").default |
    * import("./PlainValue").default | import("./QuoteDouble").default |
    * import("./QuoteSingle").default} firstItem
    */
-  constructor(firstItem) {
+  constructor(firstItem: CollectionItem) {
     super(firstItem.type === Type.SEQ_ITEM ? Type.SEQ : Type.MAP)
     for (let i = firstItem.props.length - 1; i >= 0; --i) {
       if (firstItem.props[i].start < firstItem.context.lineStart) {
@@ -68,7 +69,6 @@ export class Collection extends Node {
         break
       }
     }
-    /** @member {Array<Node|FlowCollection|Alias|BlockValue|FlowCollection|PlainValue|QuoteDouble|QuoteSingle>} items */
     this.items = [firstItem]
     const ec = grabCollectionEndComments(firstItem)
     if (ec) Array.prototype.push.apply(this.items, ec)
@@ -83,7 +83,7 @@ export class Collection extends Node {
    * @param {number} start - Index of first character
    * @returns {number} - Index of the character after this
    */
-  parse(context, start) {
+  parse(context: ParseContext, start: number) {
     // @ts-ignore trace
     trace: 'collection-start', context.pretty, { start }
     this.context = context
@@ -212,7 +212,7 @@ export class Collection extends Node {
     return offset
   }
 
-  setOrigRanges(cr, offset) {
+  setOrigRanges(cr: Array<number>, offset: number) {
     offset = super.setOrigRanges(cr, offset)
     this.items.forEach(node => {
       offset = node.setOrigRanges(cr, offset)

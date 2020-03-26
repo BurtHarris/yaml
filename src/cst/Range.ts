@@ -1,13 +1,14 @@
 export class Range {
-  static copy(orig) {
+  static copy(orig: Range) {
     return new Range(orig.start, orig.end)
   }
 
-  /**
-   * @param {number} start
-   * @param {number} [end]
-   */
-  constructor(start, end) {
+  start: number
+  end: number
+  origStart?: number
+  origEnd?: number
+
+  constructor(start: number, end?: number) {
     this.start = start
     this.end = end || start
   }
@@ -24,7 +25,7 @@ export class Range {
    * @param {number} offset - Starting index of `cr` from the last call
    * @returns {number} - The next offset, matching the one found for `origStart`
    */
-  setOrigRange(cr, offset) {
+  setOrigRange(cr: Array<number>, offset: number): number {
     const { start, end } = this
     if (cr.length === 0 || end <= cr[0]) {
       this.origStart = start

@@ -1,5 +1,10 @@
-//@ts-check
-function findLineStarts(src) {
+/// <reference path="./Document.ts" />
+
+import Document from './Document'
+
+type CST = string | Document | Document[]
+
+function findLineStarts(src: string) {
   const ls = [0]
   let offset = src.indexOf('\n')
   while (offset !== -1) {
@@ -10,7 +15,7 @@ function findLineStarts(src) {
   return ls
 }
 
-function getSrcInfo(cst) {
+function getSrcInfo(cst: any) {
   let lineStarts, src
   if (typeof cst === 'string') {
     lineStarts = findLineStarts(cst)
@@ -27,12 +32,6 @@ function getSrcInfo(cst) {
 }
 
 /**
- * @typedef {Object} LinePos - One-indexed position in the source
- * @property {number} line
- * @property {number} col
- */
-
-/**
  * Determine the line/col position matching a character offset.
  *
  * Accepts a source string or a CST document as the second parameter. With
@@ -46,7 +45,7 @@ function getSrcInfo(cst) {
  * @param {string|Document|Document[]} cst
  * @returns {?LinePos}
  */
-export function getLinePos(offset, cst) {
+export function getLinePos(offset: number, cst: CST) {
   if (typeof offset !== 'number' || offset < 0) return null
   const { lineStarts, src } = getSrcInfo(cst)
   if (!lineStarts || !src || offset > src.length) return null
@@ -74,7 +73,7 @@ export function getLinePos(offset, cst) {
  * @param {string|Document|Document[]} cst
  * @returns {?string}
  */
-export function getLine(line, cst) {
+export function getLine(line: number, cst: CST) {
   const { lineStarts, src } = getSrcInfo(cst)
   if (!lineStarts || !(line >= 1) || line > lineStarts.length) return null
   const start = lineStarts[line - 1]

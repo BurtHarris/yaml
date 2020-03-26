@@ -1,12 +1,12 @@
-//@ts-check
 import { Type } from '../constants'
 import { Node } from './Node'
 import { Range } from './Range'
 
 export class Directive extends Node {
+  name: string = ''
+
   constructor() {
     super(Type.DIRECTIVE)
-    this.name = null
   }
 
   get parameters() {
@@ -14,7 +14,7 @@ export class Directive extends Node {
     return raw ? raw.trim().split(/[ \t]+/) : []
   }
 
-  parseName(start) {
+  parseName(start: number) {
     const { src } = this.context
     let offset = start
     let ch = src[offset]
@@ -24,7 +24,7 @@ export class Directive extends Node {
     return offset
   }
 
-  parseParameters(start) {
+  parseParameters(start: number) {
     const { src } = this.context
     let offset = start
     let ch = src[offset]
@@ -33,7 +33,7 @@ export class Directive extends Node {
     return offset
   }
 
-  parse(context, start) {
+  parse(context: PartialContext, start: number) {
     this.context = context
     let offset = this.parseName(start + 1)
     offset = this.parseParameters(offset)

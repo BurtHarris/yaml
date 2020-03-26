@@ -22,6 +22,7 @@ export class YAMLError extends Error {
     const cst = this.source.context && this.source.context.root
     if (typeof this.offset === 'number') {
       this.range = new Range(this.offset, this.offset + 1)
+      //@ts-ignore Confusion over type Document...
       const start = cst && getLinePos(this.offset, cst)
       if (start) {
         const end = { line: start.line, col: start.col + 1 }
@@ -35,6 +36,7 @@ export class YAMLError extends Error {
     if (this.linePos) {
       const { line, col } = this.linePos.start
       this.message += ` at line ${line}, column ${col}`
+      //@ts-ignore Confusion over type Document...
       const ctx = cst && getPrettyContext(this.linePos, cst)
       if (ctx) this.message += `:\n\n${ctx}\n`
     }

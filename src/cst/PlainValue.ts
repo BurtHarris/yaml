@@ -4,7 +4,7 @@ import { Range } from './Range'
 import { ParseContext, PartialContext } from './ParseContext'
 
 export class PlainValue extends Node {
-  static endOfLine(src, start, inFlow) {
+  static endOfLine(src: string, start: number, inFlow: boolean) {
     let ch = src[start]
     let offset = start
     while (ch && ch !== '\n') {

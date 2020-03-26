@@ -1,4 +1,3 @@
-//@ts-check
 import { Type } from '../constants'
 import { YAMLSemanticError } from '../errors'
 import { BlankLine } from './BlankLine'
@@ -23,7 +22,7 @@ export class CollectionItem extends Node {
    * @param {number} start - Index of first character
    * @returns {number} - Index of the character after this
    */
-  parse(context: Partial<ParseContext>, start: number) {
+  parse(context: Partial<ParseContext>, start: number): number {
     this.context = context
     // @ts-ignore trace
     trace: 'item-start', context.pretty, { start }

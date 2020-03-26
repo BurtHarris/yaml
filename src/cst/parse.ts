@@ -3,7 +3,7 @@
 import { Document } from './Document'
 import { ParseContext } from './ParseContext'
 
-export function parse(src) {
+export function parse(src: string) {
   const cr = []
   if (src.indexOf('\r') !== -1) {
     src = src.replace(/\r\n?/g, (match, offset) => {

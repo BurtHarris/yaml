@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    // Avoid mistakes with issues like browser Document class
+    // "lib": ["ES2016"],
     // Target latest version of ECMAScript.
     "target": "esnext",
     // Search under node_modules for non-relative imports.

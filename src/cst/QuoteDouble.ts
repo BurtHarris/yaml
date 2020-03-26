@@ -1,4 +1,3 @@
-//@ts-check
 import { YAMLSemanticError, YAMLSyntaxError } from '../errors'
 import { Node } from './Node'
 import { Range } from './Range'
@@ -6,7 +5,7 @@ import { Range } from './Range'
 import { ParseContext, PartialContext } from './ParseContext'
 
 export class QuoteDouble extends Node {
-  static endOfQuote(src, offset) {
+  static endOfQuote(src: string, offset: number) {
     let ch = src[offset]
     while (ch && ch !== '"') {
       offset += ch === '\\' ? 2 : 1
@@ -18,7 +17,7 @@ export class QuoteDouble extends Node {
   /**
    * @returns {string | { str: string, errors: YAMLSyntaxError[] }}
    */
-  get strValue() {
+  get strValue(): string | { str: string; errors: YAMLSyntaxError[] } {
     if (!this.valueRange || !this.context) return null
     const errors = []
     const { start, end } = this.valueRange
@@ -146,7 +145,7 @@ export class QuoteDouble extends Node {
     return errors.length > 0 ? { errors, str } : str
   }
 
-  parseCharCode(offset, length, errors) {
+  parseCharCode(offset: number, length: number, errors: any[]) {
     const { src } = this.context
     const cc = src.substr(offset, length)
     const ok = cc.length === length && /^[0-9a-fA-F]+$/.test(cc)
@@ -170,7 +169,7 @@ export class QuoteDouble extends Node {
    * @param {number} start - Index of first character
    * @returns {number} - Index of the character after this scalar
    */
-  parse(context, start) {
+  parse(context: ParseContext, start: number): number {
     this.context = context
     const { src } = context
     let offset = QuoteDouble.endOfQuote(src, start + 1)

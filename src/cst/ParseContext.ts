@@ -1,4 +1,3 @@
-//@ts-check
 import { Char, Type } from '../constants'
 import { YAMLSyntaxError } from '../errors'
 import { Alias } from './Alias'
@@ -49,7 +48,7 @@ function createNewNode(type, props) {
  * @param {string} src - Source of the YAML document
  */
 export class ParseContext {
-  static parseType(src, offset, inFlow) {
+  static parseType(src: string, offset: number, inFlow) {
     switch (src[offset]) {
       case '*':
         return Type.ALIAS
@@ -105,7 +104,7 @@ export class ParseContext {
     this.src = orig.src
   }
 
-  nodeStartsCollection(node) {
+  nodeStartsCollection(node: Node) {
     const { inCollection, inFlow, src } = this
     if (inCollection || inFlow) return false
     if (node instanceof CollectionItem) return true
@@ -118,7 +117,7 @@ export class ParseContext {
 
   // Anchor and tag are before type, which determines the node implementation
   // class; hence this intermediate step.
-  parseProps(offset) {
+  parseProps(offset: number) {
     const { inFlow, parent, src } = this
     const props = []
     let lineHasProps = false
@@ -184,7 +183,7 @@ export class ParseContext {
    * @param {number} start - Index of first non-whitespace character for the node
    * @returns {?Node} - null if at a document boundary
    */
-  parseNode = (overlay, start) => {
+  parseNode = (overlay: PartialContext, start: number) => {
     if (Node.atDocumentBoundary(this.src, start)) return null
     const context = new ParseContext(this, overlay)
     const { props, type, valueStart } = context.parseProps(start)
@@ -227,7 +226,7 @@ export class ParseContext {
           'Block collection must not have preceding content here (e.g. directives-end indicator)'
         )
       }
-      const collection = new Collection(node)
+      const collection = new Collection(node as CollectionItem)
       offset = collection.parse(new ParseContext(context), offset)
       collection.range = new Range(start, offset)
       // @ts-ignore trace

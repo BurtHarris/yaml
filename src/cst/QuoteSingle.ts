@@ -1,4 +1,3 @@
-//@ts-check
 import { YAMLSemanticError, YAMLSyntaxError } from '../errors'
 import { Node } from './Node'
 import { Range } from './Range'
@@ -6,7 +5,7 @@ import { Range } from './Range'
 import { ParseContext, PartialContext } from './ParseContext'
 
 export class QuoteSingle extends Node {
-  static endOfQuote(src, offset) {
+  static endOfQuote(src: string, offset: number) {
     let ch = src[offset]
     while (ch) {
       if (ch === "'") {
@@ -22,7 +21,7 @@ export class QuoteSingle extends Node {
   /**
    * @returns {string | { str: string, errors: YAMLSyntaxError[] }}
    */
-  get strValue() {
+  get strValue(): string | { str: string; errors: YAMLSyntaxError[] } {
     if (!this.valueRange || !this.context) return null
     const errors = []
     const { start, end } = this.valueRange
@@ -83,7 +82,7 @@ export class QuoteSingle extends Node {
    * @param {number} start - Index of first character
    * @returns {number} - Index of the character after this scalar
    */
-  parse(context, start) {
+  parse(context: ParseContext, start: number): number {
     this.context = context
     const { src } = context
     let offset = QuoteSingle.endOfQuote(src, start + 1)

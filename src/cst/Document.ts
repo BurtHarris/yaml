@@ -1,4 +1,3 @@
-//@ts-check
 import { Char, Type } from '../constants'
 import { YAMLSemanticError, YAMLSyntaxError } from '../errors'
 import { BlankLine } from './BlankLine'
@@ -11,7 +10,7 @@ import { Range } from './Range'
 import { ParseContext, PartialContext } from './ParseContext'
 
 export class Document extends Node {
-  static startCommentOrEndBlankLine(src, start) {
+  static startCommentOrEndBlankLine(src: string, start: number) {
     const offset = Node.endOfWhiteSpace(src, start)
     const ch = src[offset]
     return ch === '#' || ch === '\n' ? offset : start
@@ -26,7 +25,7 @@ export class Document extends Node {
     super(Type.DOCUMENT)
   }
 
-  parseDirectives(start) {
+  parseDirectives(start: number) {
     const { src } = this.context
     this.directives = []
     let atLineStart = true
@@ -101,7 +100,7 @@ export class Document extends Node {
     return offset
   }
 
-  parseContents(start) {
+  parseContents(start: number) {
     const { parseNode, src } = this.context
     if (!this.contents) this.contents = []
     let lineStart = start
@@ -196,7 +195,7 @@ export class Document extends Node {
    * @param {number} start - Index of first character
    * @returns {number} - Index of the character after this
    */
-  parse(context, start) {
+  parse(context: PartialContext, start: number) {
     context.root = this
     this.context = context
     const { src } = context
@@ -210,7 +209,7 @@ export class Document extends Node {
     return offset
   }
 
-  setOrigRanges(cr, offset) {
+  setOrigRanges(cr: Array<number>, offset: number) {
     offset = super.setOrigRanges(cr, offset)
     this.directives.forEach(node => {
       offset = node.setOrigRanges(cr, offset)

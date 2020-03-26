@@ -1,4 +1,3 @@
-// @ts-check
 import { Type } from '../constants'
 import { YAMLSemanticError } from '../errors'
 import { BlankLine } from './BlankLine'
@@ -130,7 +129,7 @@ export class FlowCollection extends Node {
     return offset
   }
 
-  setOrigRanges(cr, offset) {
+  setOrigRanges(cr: Array<number>, offset: number) {
     offset = super.setOrigRanges(cr, offset)
     this.items.forEach(node => {
       if (node instanceof Node) {

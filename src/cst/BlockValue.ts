@@ -1,18 +1,21 @@
-// @ts-check
 import { Type } from '../constants'
 import { Node } from './Node'
 import { Range } from './Range'
 // eslint-disable-next-line no-unused-vars
 import { ParseContext, PartialContext } from './ParseContext'
 
-export const Chomp = {
-  CLIP: 'CLIP',
-  KEEP: 'KEEP',
-  STRIP: 'STRIP'
+export enum Chomp {
+  CLIP = 'CLIP',
+  KEEP = 'KEEP',
+  STRIP = 'STRIP'
 }
 
 export class BlockValue extends Node {
-  constructor(type, props) {
+  blockIndent: number
+  chomping: Chomp
+  blockStyle: any
+
+  constructor(type: string, props: Range[]) {
     super(type, props)
     this.blockIndent = null
     this.chomping = Chomp.CLIP
@@ -85,7 +88,7 @@ export class BlockValue extends Node {
     return this.chomping === Chomp.STRIP ? str : str + '\n'
   }
 
-  parseBlockHeader(start) {
+  parseBlockHeader(start: number) {
     const { src } = this.context
     let offset = start + 1
     let bi = ''
@@ -119,7 +122,7 @@ export class BlockValue extends Node {
     }
   }
 
-  parseBlockValue(start) {
+  parseBlockValue(start: number) {
     const { indent, src } = this.context
     let offset = start
     let valueEnd = start
@@ -179,7 +182,7 @@ export class BlockValue extends Node {
    * @param {number} start - Index of first character
    * @returns {number} - Index of the character after this block
    */
-  parse(context, start) {
+  parse(context: PartialContext, start: number) {
     this.context = context
     // @ts-ignore trace
     trace: 'block-start', context.pretty, { start }
@@ -199,7 +202,7 @@ export class BlockValue extends Node {
     return offset
   }
 
-  setOrigRanges(cr, offset) {
+  setOrigRanges(cr: Array<number>, offset: number) {
     offset = super.setOrigRanges(cr, offset)
     return this.header ? this.header.setOrigRange(cr, offset) : offset
   }
