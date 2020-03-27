@@ -4,16 +4,15 @@ import { toJSON } from '../toJSON'
 import { Node } from './Node'
 
 export class Scalar extends Node {
-  constructor(value) {
+  constructor(public value: any) {
     super()
-    this.value = value
   }
 
-  toJSON(arg, ctx) {
+  toJSON(arg, ctx): string {
     return ctx && ctx.keep ? this.value : toJSON(this.value, arg, ctx)
   }
 
-  toString() {
+  toString(): string {
     return String(this.value)
   }
 }

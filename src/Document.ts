@@ -15,6 +15,7 @@ import { Collection, isEmptyPath } from './schema/Collection'
 import { Node } from './schema/Node'
 import { Scalar } from './schema/Scalar'
 import { toJSON } from './toJSON'
+import { ParseOptions } from './ParseOptions'
 
 const isCollectionItem = node =>
   node && [Type.MAP_KEY, Type.MAP_VALUE, Type.SEQ_ITEM].includes(node.type)
@@ -47,18 +48,20 @@ export class Document {
     }
   }
 
-  constructor(options) {
+  anchors: Anchors
+  commentBefore: string = null
+  comment: string = null
+  contents: Node[] = null
+  directivesEndMarker = null
+  errors = []
+  options: ParseOptions
+  schema = null
+  tagPrefixes = []
+  version = null
+  warnings = []
+
+  constructor(options: ParseOptions) {
     this.anchors = new Anchors(options.anchorPrefix)
-    this.commentBefore = null
-    this.comment = null
-    this.contents = null
-    this.directivesEndMarker = null
-    this.errors = []
-    this.options = options
-    this.schema = null
-    this.tagPrefixes = []
-    this.version = null
-    this.warnings = []
   }
 
   assertCollectionContents() {
