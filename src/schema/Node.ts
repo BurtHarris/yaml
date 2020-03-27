@@ -2,7 +2,7 @@
  * Abstract Node class for the YAML Document (AST)
  */
 
-export default abstract class Node {
+export abstract class Node {
   comment?: string // a comment on or immediately after this
   commentBefore?: string // a comment before this
   range?: [number, number]
