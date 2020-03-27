@@ -3,11 +3,7 @@ import { Document as YAMLDocument } from './Document'
 import { YAMLSemanticError } from './errors'
 import { Schema } from './schema'
 import { warn } from './warnings'
-import { ParseOptions, Tag, StringifyContext } from './ParseOptions'
 
-/**
- * @internal
- */
 const defaultOptions = {
   anchorPrefix: 'a',
   customTags: null,
@@ -21,13 +17,7 @@ const defaultOptions = {
   version: '1.2'
 }
 
-export function createNode(value: any, tag?: string)
-export function createNode(value: any, wrapScalars: boolean, tag?: string)
-export function createNode(
-  value: any,
-  wrapScalars: boolean | string = true,
-  tag?: string
-) {
+function createNode(value, wrapScalars = true, tag) {
   if (tag === undefined && typeof wrapScalars === 'string') {
     tag = wrapScalars
     wrapScalars = true
@@ -41,13 +31,13 @@ export function createNode(
   return schema.createNode(value, wrapScalars, tag)
 }
 
-export class Document extends YAMLDocument {
+class Document extends YAMLDocument {
   constructor(options) {
     super(Object.assign({}, defaultOptions, options))
   }
 }
 
-export function parseAllDocuments(src: string, options: ParseOptions) {
+function parseAllDocuments(src, options) {
   const stream = []
   let prev
   for (const cstDoc of parseCST(src)) {
@@ -59,10 +49,7 @@ export function parseAllDocuments(src: string, options: ParseOptions) {
   return stream
 }
 
-export function parseDocument(
-  src: string,
-  options: ParseOptions = defaultOptions
-) {
+function parseDocument(src, options) {
   const cst = parseCST(src)
   const doc = new Document(options).parse(cst[0])
   if (cst.length > 1) {
@@ -73,7 +60,7 @@ export function parseDocument(
   return doc
 }
 
-function parse(src: string, options: ParseOptions) {
+function parse(src, options) {
   const doc = parseDocument(src, options)
   doc.warnings.forEach(warning => warn(warning))
   if (doc.errors.length > 0) throw doc.errors[0]
@@ -96,5 +83,3 @@ export const YAML = {
   parseDocument,
   stringify
 }
-
-export type { ParseOptions, Tag, StringifyContext }

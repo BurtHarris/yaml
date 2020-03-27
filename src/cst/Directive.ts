@@ -1,6 +1,7 @@
 import { Type } from '../constants'
 import { Node } from './Node'
 import { Range } from './Range'
+import { PartialContext } from './ParseContext'
 
 export class Directive extends Node {
   name: string = ''

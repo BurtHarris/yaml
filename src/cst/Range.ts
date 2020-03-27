@@ -20,7 +20,7 @@ export class Range {
   /**
    * Set `origStart` and `origEnd` to point to the original source range for
    * this node, which may differ due to dropped CR characters.
-   * @internal
+   *
    * @param {number[]} cr - Positions of dropped CR characters
    * @param {number} offset - Starting index of `cr` from the last call
    * @returns {number} - The next offset, matching the one found for `origStart`

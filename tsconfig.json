@@ -10,18 +10,17 @@
     "allowJs": true,
     // Perform typechecking in .js files
     "checkJs": true,
-    // Don't emit; allow Babel to transform files, but generate
-    // typescript declaration files (.d.ts)
-    "emitDeclarationOnly": true,
-    "stripInternal": true,
-    "declaration": true,
-    "declarationDir": "./declarations",
+    // Don't emit; allow Babel to transform files.
+    "noEmit": true,
+    "outDir": "ts",
     // disable strictest settings like strictNullChecks & noImplicitAny.
     "strict": false,
+    "declaration": true,
+    "declarationDir": "./declarations",
     // Disallow features that require cross-file information for emit.
     "isolatedModules": true,
     // Import non-ES modules as default imports.
     "esModuleInterop": true
   },
-  "include": ["src"]
+  "include": ["src/cst"]
 }

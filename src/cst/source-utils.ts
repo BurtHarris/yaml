@@ -1,6 +1,6 @@
 /// <reference path="./Document.ts" />
 
-import Document from './Document'
+import { Document } from './Document'
 
 type CST = string | Document | Document[]
 
